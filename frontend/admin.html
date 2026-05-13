@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/profile.css" />
 </head>
 <body>
 
@@ -76,9 +77,24 @@
         </div>
         <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="closeDetailModal()">✕</button>
       </div>
-      <div class="cards-row" id="detailCards"></div>
-      <div class="section-title" style="margin-bottom:12px">Transactions</div>
-      <div id="detailTransactions"></div>
+
+      <!-- Tabs -->
+      <div class="detail-tabs">
+        <button class="detail-tab active" id="tabTransactions" onclick="switchTab('transactions')">Transactions</button>
+        <button class="detail-tab" id="tabProfile" onclick="switchTab('profile')">Profile</button>
+      </div>
+
+      <!-- Transactions Tab -->
+      <div id="tabContentTransactions">
+        <div class="cards-row" id="detailCards"></div>
+        <div class="section-title" style="margin-bottom:12px">Transaction History</div>
+        <div id="detailTransactions"></div>
+      </div>
+
+      <!-- Profile Tab -->
+      <div id="tabContentProfile" class="hidden">
+        <div id="detailProfile"></div>
+      </div>
     </div>
   </div>
 

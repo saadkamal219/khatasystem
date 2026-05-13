@@ -15,6 +15,17 @@ router.get("/users", verifyAdmin, async (req, res) => {
   }
 });
 
+// GET one user's full profile
+router.get("/user/:userId/profile", verifyAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
 // GET one user's full transaction history
 router.get("/user/:userId/transactions", verifyAdmin, async (req, res) => {
   try {

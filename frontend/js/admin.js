@@ -1,6 +1,7 @@
 requireAdmin();
 
 let rejectingRequestId = null;
+let currentDetailUserId = null;
 
 window.addEventListener("DOMContentLoaded", () => {
   loadPendingRequests();
@@ -12,8 +13,6 @@ async function loadAllUsers() {
   try {
     const data = await apiRequest("/admin/users");
     renderUserList(data.users);
-
-    // Update stats
     const totalOwed = data.users.reduce((sum, u) => sum + Math.max(0, u.totalCredit - u.totalPaid), 0);
     document.getElementById("statUsers").textContent = data.users.length;
     document.getElementById("statOwed").textContent  = formatAmount(totalOwed);
@@ -36,9 +35,12 @@ function renderUserList(users) {
   container.innerHTML = users.map(u => {
     const remaining = Math.max(0, u.totalCredit - u.totalPaid);
     const initials  = u.name.trim().split(" ").map(w => w[0]).join("").toUpperCase().slice(0,2);
+    const avatarHtml = u.avatar
+      ? `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
+      : initials;
     return `
       <div class="user-row">
-        <div class="user-avatar">${initials}</div>
+        <div class="user-avatar">${avatarHtml}</div>
         <div class="user-info">
           <div class="user-name">${u.name}</div>
           <div class="user-phone">${u.phone}</div>
@@ -47,21 +49,38 @@ function renderUserList(users) {
           <div class="user-balance-amount">${formatAmount(remaining)}</div>
           <div class="user-balance-label">remaining</div>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="viewUserDetail('${u._id}','${u.name}','${u.phone}')">View</button>
+        <button class="btn btn-outline btn-sm" onclick="viewUserDetail('${u._id}','${u.name}','${u.phone}','${u.avatar||''}')">View</button>
       </div>`;
   }).join("");
 }
 
 // ---- User Detail Modal ----
-async function viewUserDetail(userId, userName, userPhone) {
+async function viewUserDetail(userId, userName, userPhone, avatarData) {
+  currentDetailUserId = userId;
   const initials = userName.trim().split(" ").map(w => w[0]).join("").toUpperCase().slice(0,2);
-  document.getElementById("detailAvatar").textContent   = initials;
+
+  // Set avatar
+  const avatarEl = document.getElementById("detailAvatar");
+  if (avatarData) {
+    avatarEl.innerHTML = `<img src="${avatarData}" style="width:100%;height:100%;object-fit:cover;border-radius:14px" />`;
+  } else {
+    avatarEl.textContent = initials;
+  }
+
   document.getElementById("detailUserName").textContent  = userName;
   document.getElementById("detailUserPhone").textContent = userPhone;
+
+  // Reset to transactions tab
+  switchTab("transactions");
   document.getElementById("detailCards").innerHTML = `<div class="loading-row" style="grid-column:1/-1"><div class="spinner"></div></div>`;
   document.getElementById("detailTransactions").innerHTML = "";
+  document.getElementById("detailProfile").innerHTML = "";
   document.getElementById("userDetailModal").classList.remove("hidden");
 
+  loadUserTransactions(userId);
+}
+
+async function loadUserTransactions(userId) {
   try {
     const { user, transactions } = await apiRequest(`/admin/user/${userId}/transactions`);
     const remaining = Math.max(0, user.totalCredit - user.totalPaid);
@@ -102,8 +121,54 @@ async function viewUserDetail(userId, userName, userPhone) {
   }
 }
 
+async function loadUserProfile(userId) {
+  const container = document.getElementById("detailProfile");
+  container.innerHTML = `<div class="loading-row"><div class="spinner"></div></div>`;
+  try {
+    const { user } = await apiRequest(`/admin/user/${userId}/profile`);
+
+    const field = (label, value) => `
+      <div class="profile-field">
+        <span class="profile-field-label">${label}</span>
+        <span class="profile-field-value ${value ? "" : "empty"}">${value || "Not provided"}</span>
+      </div>`;
+
+    const avatarHtml = user.avatar
+      ? `<img src="${user.avatar}" />`
+      : user.name.trim().split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
+
+    container.innerHTML = `
+      <div class="profile-view-card">
+        <div class="profile-view-avatar">${avatarHtml}</div>
+        <div class="profile-view-body">
+          ${field("Name",    user.name)}
+          ${field("Phone",   user.phone)}
+          ${field("Email",   user.email)}
+          ${field("Address", user.address)}
+          ${field("Note",    user.note)}
+          ${field("Joined",  formatDate(user.createdAt))}
+        </div>
+      </div>`;
+  } catch (err) {
+    container.innerHTML = `<div style="color:var(--red);padding:12px;font-size:13px">${err.message}</div>`;
+  }
+}
+
+// ---- Tabs ----
+function switchTab(tab) {
+  document.getElementById("tabContentTransactions").classList.toggle("hidden", tab !== "transactions");
+  document.getElementById("tabContentProfile").classList.toggle("hidden", tab !== "profile");
+  document.getElementById("tabTransactions").classList.toggle("active", tab === "transactions");
+  document.getElementById("tabProfile").classList.toggle("active", tab === "profile");
+
+  if (tab === "profile" && currentDetailUserId) {
+    loadUserProfile(currentDetailUserId);
+  }
+}
+
 function closeDetailModal() {
   document.getElementById("userDetailModal").classList.add("hidden");
+  currentDetailUserId = null;
 }
 
 // ---- Pending Requests ----
@@ -186,7 +251,6 @@ async function confirmReject() {
   }
 }
 
-// ---- Toast ----
 function showToast(msg) {
   const t = document.createElement("div");
   t.textContent = msg;

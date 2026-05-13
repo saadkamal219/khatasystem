@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khata — My Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="nav-brand-dot"></span>
+      Khata
+    </div>
+    <div class="nav-right">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">← Back</a>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="container" style="max-width:600px">
+
+    <!-- Profile Header -->
+    <div class="profile-hero">
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <img id="avatarImg" src="" alt="" class="avatar-img hidden" />
+          <div id="avatarInitials" class="avatar-initials">?</div>
+        </div>
+        <label class="avatar-edit-btn" for="avatarInput" title="Change photo">
+          📷
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarChange(event)" />
+        </label>
+      </div>
+      <div class="profile-hero-info">
+        <div class="profile-hero-name" id="heroName">Loading...</div>
+        <div class="profile-hero-phone" id="heroPhone">—</div>
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="section">
+      <div class="section-title" style="margin-bottom:18px">Edit Profile</div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fieldName" placeholder="Your full name" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="fieldPhone" placeholder="01XXXXXXXXX" />
+      </div>
+      <div class="form-group">
+        <label>Email <span class="optional-tag">optional</span></label>
+        <input type="email" id="fieldEmail" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Address <span class="optional-tag">optional</span></label>
+        <input type="text" id="fieldAddress" placeholder="Your home or shop address" />
+      </div>
+      <div class="form-group">
+        <label>Note <span class="optional-tag">optional</span></label>
+        <input type="text" id="fieldNote" placeholder="e.g. Regular customer, Dhaka" />
+      </div>
+
+      <div id="profileError"   class="error-msg hidden"></div>
+      <div id="profileSuccess" class="success-msg hidden"></div>
+
+      <div style="display:flex; gap:10px; margin-top:4px">
+        <a href="dashboard.html" class="btn btn-outline" style="flex:1; text-align:center">Cancel</a>
+        <button class="btn btn-primary" style="flex:2" id="saveBtn" onclick="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
