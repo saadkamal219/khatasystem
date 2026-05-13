@@ -1,7 +1,7 @@
 // ============================================
 // CHANGE THIS TO YOUR RENDER BACKEND URL
 // ============================================
-const API_BASE = "https://your-app-name.onrender.com/api";
+const API_BASE = "https://khatasystem.onrender.com/api";
 
 // Helper: get stored auth token
 function getToken() {
