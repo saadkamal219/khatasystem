@@ -1,62 +1,175 @@
-/* Admin dashboard specific styles */
+/* Admin dashboard */
 
 .admin-badge {
   background: #7c3aed;
   color: white;
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
-/* User row in admin list */
+/* Stats bar at top */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .admin-stats { grid-template-columns: 1fr 1fr; }
+  .admin-stats .stat-card:last-child { grid-column: 1 / -1; }
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+/* User rows */
 .user-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
   gap: 12px;
-  flex-wrap: wrap;
 }
 
 .user-row:last-child { border-bottom: none; }
 
-.user-info-left {}
-.user-name { font-weight: 600; font-size: 15px; }
-.user-phone { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-.user-balances {
+.user-avatar {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
   display: flex;
-  gap: 20px;
-  font-size: 13px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.balance-item { text-align: right; }
-.balance-label { color: var(--text-muted); font-size: 11px; }
-.balance-value { font-weight: 700; font-size: 14px; }
-.balance-value.owed { color: var(--red); }
-.balance-value.paid { color: var(--green); }
-.balance-value.remaining { color: var(--primary); }
+.user-info { flex: 1; min-width: 0; }
+.user-name  { font-size: 14px; font-weight: 600; color: var(--text); }
+.user-phone { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-/* Pending request item in admin */
-.pending-req-item {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
+.user-balance {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.user-balance-amount {
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--red);
+}
+
+.user-balance-label {
+  font-size: 10px;
+  color: var(--text-faint);
+  margin-top: 1px;
+}
+
+/* Pending request card */
+.pending-card {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.2s ease;
+}
+
+.pending-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-.pending-req-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+.pending-card-user {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
 }
 
-.pending-req-user { font-weight: 600; font-size: 14px; }
-.pending-req-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-.pending-req-note { font-size: 13px; margin-bottom: 12px; }
+.pending-card-phone {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
 
-.pending-req-actions { display: flex; gap: 8px; }
+.pending-card-body { margin-bottom: 12px; }
+
+.pending-card-type {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.pending-card-note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.pending-card-date {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 3px;
+}
+
+.pending-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Detail modal user header */
+.detail-user-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-avatar {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detail-name  { font-size: 16px; font-weight: 700; }
+.detail-phone { font-size: 12px; color: var(--text-muted); margin-top: 2px; }

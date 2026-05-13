@@ -1,65 +1,92 @@
-/* Auth pages: login and signup */
-
+/* Auth pages */
 .auth-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ebf8ff 0%, #e9d8fd 100%);
-  padding: 16px;
+  padding: 20px 16px;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(194,65,12,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(21,128,61,0.05) 0%, transparent 60%);
 }
 
 .auth-card {
-  background: white;
-  border-radius: 12px;
-  padding: 36px 32px;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 36px 28px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 .brand {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .brand-icon {
-  width: 56px;
-  height: 56px;
-  background: var(--primary);
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
   color: white;
-  border-radius: 14px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
-  font-weight: 700;
-  margin: 0 auto 12px;
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 auto 14px;
+  box-shadow: 0 8px 24px rgba(194,65,12,0.3);
 }
 
 .brand h1 {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
   color: var(--text);
-  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+  margin-bottom: 5px;
 }
 
 .brand p {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .auth-footer {
   text-align: center;
   margin-top: 20px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
 .auth-footer a {
   color: var(--primary);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .auth-footer a:hover { text-decoration: underline; }
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}

@@ -3,61 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khata - Admin</title>
+  <title>Khata — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
 
-  <!-- Top Navbar -->
   <nav class="navbar">
-    <div class="nav-brand">খ Khata — Admin</div>
+    <div class="nav-brand">
+      <span class="nav-brand-dot"></span>
+      Khata
+    </div>
     <div class="nav-right">
       <span class="admin-badge">Admin</span>
-      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
     </div>
   </nav>
 
   <div class="container">
 
-    <!-- Pending Edit Requests (shown first if any) -->
-    <div class="section" id="pendingSection">
-      <h2 class="section-title">⏳ Pending Edit Requests</h2>
-      <div id="pendingRequests">
-        <p class="empty-msg">Loading...</p>
+    <!-- Admin stats -->
+    <div class="admin-stats" id="adminStats">
+      <div class="stat-card">
+        <div class="stat-label">Customers</div>
+        <div class="stat-value" id="statUsers">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Owed</div>
+        <div class="stat-value" style="color:var(--red)" id="statOwed">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value" style="color:var(--amber)" id="statPending">—</div>
       </div>
     </div>
 
-    <!-- All Accounts Overview -->
+    <!-- Pending Requests -->
+    <div class="section" id="pendingSection">
+      <div class="section-header">
+        <div class="section-title">⏳ Pending Approvals</div>
+        <button class="btn btn-ghost btn-sm" onclick="loadPendingRequests()">↻ Refresh</button>
+      </div>
+      <div id="pendingRequests">
+        <div class="loading-row"><div class="spinner"></div> Loading...</div>
+      </div>
+    </div>
+
+    <!-- All Customers -->
     <div class="section">
-      <h2 class="section-title">All Customer Accounts</h2>
+      <div class="section-header">
+        <div class="section-title">All Customers</div>
+        <button class="btn btn-ghost btn-sm" onclick="loadAllUsers()">↻ Refresh</button>
+      </div>
       <div id="userList">
-        <p class="empty-msg">Loading accounts...</p>
+        <div class="loading-row"><div class="spinner"></div> Loading...</div>
       </div>
     </div>
 
   </div>
 
-  <!-- User Detail Modal (view-only) -->
+  <!-- User Detail Modal -->
   <div id="userDetailModal" class="modal hidden">
     <div class="modal-content modal-large">
-      <div class="modal-header">
-        <h3 id="detailUserName">User Transactions</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeDetailModal()">Close</button>
+      <span class="modal-handle"></span>
+      <div class="detail-user-header">
+        <div class="detail-avatar" id="detailAvatar">?</div>
+        <div>
+          <div class="detail-name" id="detailUserName">—</div>
+          <div class="detail-phone" id="detailUserPhone">—</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="closeDetailModal()">✕</button>
       </div>
       <div class="cards-row" id="detailCards"></div>
+      <div class="section-title" style="margin-bottom:12px">Transactions</div>
       <div id="detailTransactions"></div>
     </div>
   </div>
 
-  <!-- Reject Reason Modal -->
+  <!-- Reject Modal -->
   <div id="rejectModal" class="modal hidden">
     <div class="modal-content">
+      <span class="modal-handle"></span>
       <h3>Reject Request</h3>
-      <div class="form-group">
-        <label>Reason (optional)</label>
-        <input type="text" id="rejectNote" placeholder="Tell the user why..." />
+      <p class="modal-subtitle">The customer will see your reason</p>
+      <div class="form-group" style="margin-top:16px">
+        <label>Reason <span style="font-weight:400;text-transform:none;opacity:0.6">(optional)</span></label>
+        <input type="text" id="rejectNote" placeholder="e.g. amount seems incorrect..." />
       </div>
       <div class="modal-buttons">
         <button class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>

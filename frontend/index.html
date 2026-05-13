@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khata - Login</title>
+  <title>Khata — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
@@ -13,28 +15,28 @@
     <div class="brand">
       <div class="brand-icon">খ</div>
       <h1>Khata</h1>
-      <p>Credit Management System</p>
+      <p>Sign in to your account</p>
     </div>
 
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="on">
       <div class="form-group">
-        <label>Phone Number / Username</label>
-        <input type="text" id="phone" placeholder="01XXXXXXXXX" required />
+        <label>Phone / Username</label>
+        <input type="text" id="phone" placeholder="01XXXXXXXXX" autocomplete="username" required />
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="password" placeholder="••••••••" required />
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
       </div>
 
       <div id="errorMsg" class="error-msg hidden"></div>
 
-      <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
-        Login
+      <button type="submit" class="btn btn-primary btn-full btn-lg" id="loginBtn">
+        Sign In
       </button>
     </form>
 
-    <p class="auth-footer">
-      No account? <a href="signup.html">Create one</a>
+    <p class="auth-footer" style="margin-top:16px">
+      New customer? <a href="signup.html">Create account</a>
     </p>
   </div>
 

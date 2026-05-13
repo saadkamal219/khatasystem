@@ -3,106 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khata - My Account</title>
+  <title>Khata — My Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
 
-  <!-- Top Navbar -->
   <nav class="navbar">
-    <div class="nav-brand">খ Khata</div>
+    <div class="nav-brand">
+      <span class="nav-brand-dot"></span>
+      Khata
+    </div>
     <div class="nav-right">
-      <span id="userName">Loading...</span>
-      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+      <span class="nav-user" id="userName">—</span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
     </div>
   </nav>
 
   <div class="container">
 
-    <!-- Summary Cards -->
-    <div class="cards-row">
-      <div class="card card-red">
-        <div class="card-label">Total Credit (Owed)</div>
-        <div class="card-amount" id="totalCredit">৳ 0</div>
-      </div>
-      <div class="card card-green">
-        <div class="card-label">Total Paid</div>
-        <div class="card-amount" id="totalPaid">৳ 0</div>
-      </div>
-      <div class="card card-blue">
-        <div class="card-label">Remaining Balance</div>
-        <div class="card-amount" id="remaining">৳ 0</div>
+    <!-- Balance Hero -->
+    <div class="balance-hero">
+      <div class="balance-hero-label">Remaining Balance</div>
+      <div class="balance-hero-amount" id="remaining">৳ 0</div>
+      <div class="balance-hero-row">
+        <div class="balance-hero-stat">
+          <div class="balance-hero-stat-label">Total Credit</div>
+          <div class="balance-hero-stat-value owed" id="totalCredit">৳ 0</div>
+        </div>
+        <div class="balance-hero-stat">
+          <div class="balance-hero-stat-label">Total Paid</div>
+          <div class="balance-hero-stat-value paid" id="totalPaid">৳ 0</div>
+        </div>
       </div>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Actions -->
     <div class="section">
-      <h2 class="section-title">Add Transaction</h2>
+      <div class="section-title" style="margin-bottom:12px">New Request</div>
+      <p class="section-hint">All requests need shop owner approval before they apply to your account.</p>
       <div class="action-buttons">
-        <button class="btn btn-red" onclick="openModal('credit')">+ Add Credit (Took Goods)</button>
-        <button class="btn btn-green" onclick="openModal('payment')">+ Add Payment (Paid Back)</button>
-        <button class="btn btn-outline" onclick="openRequestModal()">Request Edit (Needs Approval)</button>
+        <button class="action-btn action-btn-credit" onclick="openRequestModal('credit')">
+          <div class="action-btn-icon">📦</div>
+          <div class="action-btn-title">Took Goods on Credit</div>
+          <div class="action-btn-desc">Add a credit entry for items received</div>
+        </button>
+        <button class="action-btn action-btn-payment" onclick="openRequestModal('payment')">
+          <div class="action-btn-icon">💵</div>
+          <div class="action-btn-title">Made a Payment</div>
+          <div class="action-btn-desc">Record money you paid back</div>
+        </button>
       </div>
     </div>
 
     <!-- Transaction History -->
     <div class="section">
-      <h2 class="section-title">Transaction History</h2>
+      <div class="section-header">
+        <div class="section-title">Transaction History</div>
+        <button class="btn btn-outline btn-sm" onclick="downloadPDF()">⬇ PDF</button>
+      </div>
       <div id="transactionList">
-        <p class="empty-msg">Loading transactions...</p>
+        <div class="loading-row"><div class="spinner"></div> Loading...</div>
       </div>
     </div>
 
-    <!-- My Edit Requests -->
+    <!-- My Requests -->
     <div class="section">
-      <h2 class="section-title">My Edit Requests</h2>
+      <div class="section-header">
+        <div class="section-title">My Requests</div>
+        <button class="btn btn-ghost btn-sm" onclick="loadRequests()">↻ Refresh</button>
+      </div>
       <div id="requestList">
-        <p class="empty-msg">Loading requests...</p>
+        <div class="loading-row"><div class="spinner"></div> Loading...</div>
       </div>
     </div>
 
   </div>
 
-  <!-- Add Transaction Modal -->
-  <div id="transactionModal" class="modal hidden">
-    <div class="modal-content">
-      <h3 id="modalTitle">Add Credit</h3>
-      <div class="form-group">
-        <label>Amount (৳)</label>
-        <input type="number" id="txAmount" placeholder="0.00" min="1" />
-      </div>
-      <div class="form-group">
-        <label>Note (optional)</label>
-        <input type="text" id="txNote" placeholder="e.g. rice, oil, etc." />
-      </div>
-      <div id="txError" class="error-msg hidden"></div>
-      <div class="modal-buttons">
-        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-primary" id="txSubmitBtn" onclick="submitTransaction()">Add</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Request Edit Modal (needs admin approval) -->
+  <!-- Request Modal -->
   <div id="requestModal" class="modal hidden">
     <div class="modal-content">
-      <h3>Request an Edit</h3>
-      <p class="modal-info">This transaction will only apply after the admin approves it.</p>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="reqType">
-          <option value="credit">Credit (Took Goods)</option>
-          <option value="payment">Payment (Paid Back)</option>
-        </select>
+      <span class="modal-handle"></span>
+      <h3 id="requestModalTitle">Submit Request</h3>
+      <p class="modal-subtitle" id="requestModalSub">Waiting for shop owner approval</p>
+      <div class="modal-info">
+        ⏳ This request will only be applied to your account once the shop owner approves it.
       </div>
+      <input type="hidden" id="reqType" />
       <div class="form-group">
         <label>Amount (৳)</label>
-        <input type="number" id="reqAmount" placeholder="0.00" min="1" />
+        <input type="number" id="reqAmount" placeholder="Enter amount" min="1" inputmode="decimal" />
       </div>
       <div class="form-group">
-        <label>Note</label>
-        <input type="text" id="reqNote" placeholder="Reason for this request" />
+        <label>Note <span style="font-weight:400;text-transform:none;opacity:0.6">(optional)</span></label>
+        <input type="text" id="reqNote" placeholder="e.g. rice, oil, paid via bKash..." />
       </div>
       <div id="reqError" class="error-msg hidden"></div>
       <div class="modal-buttons">
