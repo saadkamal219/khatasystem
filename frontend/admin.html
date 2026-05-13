@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khata - Admin</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">খ Khata — Admin</div>
+    <div class="nav-right">
+      <span class="admin-badge">Admin</span>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Pending Edit Requests (shown first if any) -->
+    <div class="section" id="pendingSection">
+      <h2 class="section-title">⏳ Pending Edit Requests</h2>
+      <div id="pendingRequests">
+        <p class="empty-msg">Loading...</p>
+      </div>
+    </div>
+
+    <!-- All Accounts Overview -->
+    <div class="section">
+      <h2 class="section-title">All Customer Accounts</h2>
+      <div id="userList">
+        <p class="empty-msg">Loading accounts...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- User Detail Modal (view-only) -->
+  <div id="userDetailModal" class="modal hidden">
+    <div class="modal-content modal-large">
+      <div class="modal-header">
+        <h3 id="detailUserName">User Transactions</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeDetailModal()">Close</button>
+      </div>
+      <div class="cards-row" id="detailCards"></div>
+      <div id="detailTransactions"></div>
+    </div>
+  </div>
+
+  <!-- Reject Reason Modal -->
+  <div id="rejectModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Reject Request</h3>
+      <div class="form-group">
+        <label>Reason (optional)</label>
+        <input type="text" id="rejectNote" placeholder="Tell the user why..." />
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
+        <button class="btn btn-red" onclick="confirmReject()">Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

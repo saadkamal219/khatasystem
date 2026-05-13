@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khata - My Account</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">খ Khata</div>
+    <div class="nav-right">
+      <span id="userName">Loading...</span>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Summary Cards -->
+    <div class="cards-row">
+      <div class="card card-red">
+        <div class="card-label">Total Credit (Owed)</div>
+        <div class="card-amount" id="totalCredit">৳ 0</div>
+      </div>
+      <div class="card card-green">
+        <div class="card-label">Total Paid</div>
+        <div class="card-amount" id="totalPaid">৳ 0</div>
+      </div>
+      <div class="card card-blue">
+        <div class="card-label">Remaining Balance</div>
+        <div class="card-amount" id="remaining">৳ 0</div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="section">
+      <h2 class="section-title">Add Transaction</h2>
+      <div class="action-buttons">
+        <button class="btn btn-red" onclick="openModal('credit')">+ Add Credit (Took Goods)</button>
+        <button class="btn btn-green" onclick="openModal('payment')">+ Add Payment (Paid Back)</button>
+        <button class="btn btn-outline" onclick="openRequestModal()">Request Edit (Needs Approval)</button>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="section">
+      <h2 class="section-title">Transaction History</h2>
+      <div id="transactionList">
+        <p class="empty-msg">Loading transactions...</p>
+      </div>
+    </div>
+
+    <!-- My Edit Requests -->
+    <div class="section">
+      <h2 class="section-title">My Edit Requests</h2>
+      <div id="requestList">
+        <p class="empty-msg">Loading requests...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Transaction Modal -->
+  <div id="transactionModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modalTitle">Add Credit</h3>
+      <div class="form-group">
+        <label>Amount (৳)</label>
+        <input type="number" id="txAmount" placeholder="0.00" min="1" />
+      </div>
+      <div class="form-group">
+        <label>Note (optional)</label>
+        <input type="text" id="txNote" placeholder="e.g. rice, oil, etc." />
+      </div>
+      <div id="txError" class="error-msg hidden"></div>
+      <div class="modal-buttons">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="txSubmitBtn" onclick="submitTransaction()">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Edit Modal (needs admin approval) -->
+  <div id="requestModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Request an Edit</h3>
+      <p class="modal-info">This transaction will only apply after the admin approves it.</p>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="reqType">
+          <option value="credit">Credit (Took Goods)</option>
+          <option value="payment">Payment (Paid Back)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Amount (৳)</label>
+        <input type="number" id="reqAmount" placeholder="0.00" min="1" />
+      </div>
+      <div class="form-group">
+        <label>Note</label>
+        <input type="text" id="reqNote" placeholder="Reason for this request" />
+      </div>
+      <div id="reqError" class="error-msg hidden"></div>
+      <div class="modal-buttons">
+        <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

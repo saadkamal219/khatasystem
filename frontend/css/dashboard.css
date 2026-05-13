@@ -1,0 +1,36 @@
+/* Dashboard-specific styles */
+
+/* Status badges for edit requests */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-pending { background: #fef3c7; color: #92400e; }
+.badge-approved { background: var(--green-light); color: var(--green); }
+.badge-rejected { background: var(--red-light); color: var(--red); }
+
+/* Edit request item */
+.req-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.req-item:last-child { border-bottom: none; }
+
+.req-left {}
+.req-type {
+  font-size: 13px;
+  font-weight: 600;
+}
+.req-amount { font-size: 14px; color: var(--text-muted); }
+.req-note { font-size: 12px; color: var(--text-muted); }
+.req-admin-note { font-size: 12px; color: var(--red); margin-top: 3px; }
+.req-date { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
